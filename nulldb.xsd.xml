@@ -1,0 +1,34 @@
+<db
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.w3schools.com/schema/db_schema"
+    xsi:schemaLocation="https://www.w3schools.com/schema/db_schema db.xsd"
+>
+    <majors>
+        <!--1 or more repetitions:-->
+        <major>
+            <majorId>SE01</majorId>
+            <majorName>string</majorName>
+        </major>
+    </majors>
+    <students>
+        <!--1 or more repetitions:-->
+        <student majorId="SE" ID="SE10000">
+            <firstName>string</firstName>
+            <lastName>string</lastName>
+            <email>phong@gmail.com</email>
+            <dob>2000-12-20</dob>
+            <sex>false</sex>
+            <phone>0101010</phone>
+            <status>graduated</status>
+        </student>
+        <student majorId="SE" ID="SE10000">
+            <firstName>string</firstName>
+            <lastName>string</lastName>
+            <email>phong@gmail.com</email>
+            <dob>2000-12-20</dob>
+            <sex>false</sex>
+            <phone>0101010</phone>
+            <status>graduated</status>
+        </student>
+    </students>
+</db>

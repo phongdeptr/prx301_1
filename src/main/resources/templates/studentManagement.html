@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+    <style>
+        table.GeneratedTable {
+            width: 100%;
+            background-color: #ffffff;
+            border-collapse: collapse;
+            border-width: 2px;
+            border-color: #ffcc00;
+            border-style: solid;
+            color: #000000;
+        }
+
+        table.GeneratedTable td, table.GeneratedTable th {
+            border-width: 2px;
+            border-color: #ffcc00;
+            border-style: solid;
+            padding: 3px;
+        }
+
+        table.GeneratedTable thead {
+            background-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+<!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
+
+<!-- HTML Code: Place this code in the document's body (between the 'body' tags) where the table should appear -->
+<table class="GeneratedTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Date of Birth</th>
+        <th>Sex</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th>Major</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${session.students}">
+        <td><input type="text" name="ID" th:value="${student.id}" readonly/></td>
+        <td><input type="text" name="firstName"></td>
+        <td><input type="text" name="lastName"></td>
+        <td><input type="text" name="email"></td>
+        <td><input type="text" name="dob"></td>
+        <td><input type="text" name="sex"></td>
+        <td><input type="text" name="phoneNumber"></td>
+        <td>
+            <select name="status">
+                <option th:value=""/>
+                <option th:value=""/>
+                <option th:value=""/>
+            </select>
+        </td>
+        <td>
+            <select name="majorId">
+                <option name=""/>
+            </select>
+        </td>
+        <td>Cell</td>
+    </tr>
+    <tr>
+        <td>Cell</td>
+        <td>Cell</td>
+        <td>Cell</td>
+    </tr>
+    <tr>
+        <td>Cell</td>
+        <td>Cell</td>
+        <td>Cell</td>
+    </tr>
+    </tbody>
+</table>
+<!-- Codes by Quackit.com -->
+
+
+</body>
+</html>
