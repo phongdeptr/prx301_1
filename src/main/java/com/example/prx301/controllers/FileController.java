@@ -57,10 +57,10 @@ public class FileController {
     @PostMapping("api/v1/file")
     public String fileUpload(@RequestParam("schema") MultipartFile schemaFile, @RequestParam("xml") MultipartFile xmlFIle, ModelMap model) throws IOException {
         context.getContextPath();
-        String pathOfUploadXMl = "C:\\Users\\ADMIN\\Desktop\\New folder\\prx301\\src\\main\\resources\\storage\\xml\\";
+        String pathOfUploadXMl = "D:\\FPTU\\XML\\prx301_1\\src\\main\\resources\\storage\\xml\\";
         File xml = new File(pathOfUploadXMl + xmlFIle.getOriginalFilename());
 
-        String pathOfUploadSchema = "C:\\Users\\ADMIN\\Desktop\\New folder\\prx301\\src\\main\\resources\\storage\\schema\\";
+        String pathOfUploadSchema = "D:\\FPTU\\XML\\prx301_1\\src\\main\\resources\\storage\\schema\\";
         File schema = new File(pathOfUploadSchema +schemaFile.getOriginalFilename());
 
         System.out.println("in upload file");

@@ -6,9 +6,9 @@
 </head>
 <body>
 <h2>Create new Student</h2>
-<form>
+<form action="http://localhost:8080/create" th:object="${student}" method="POST">
     <label for="id"></label>
-    <input type="text" id="id" name="ID" th:value="${studentError}"/>
+    <input type="text" id="id" name="ID"/>
 
     <label for="firstName"></label>
     <input type="text" id="firstName" name="firstName">
@@ -30,9 +30,9 @@
 
     <label for="status"></label>
     <select id ="status" name="status">
-        <option th:value=""/>
-        <option th:value=""/>
-        <option th:value=""/>
+        <option th:value="study"/>
+        <option th:value="graduated"/>
+        <option th:value="dropdown"/>
     </select>
 
     <label for="lastName"></label>

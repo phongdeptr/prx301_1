@@ -6,15 +6,15 @@ public class StudentDTO {
     private String lastName;
     private String email;
     private String dob;
-    private boolean sex;
+    private int sex;
     private String phoneNumber;
-    private EStudentStatus status;
+    private String status;
     private String majorId;
 
     public StudentDTO() {
     }
 
-    public StudentDTO(String id, String firstName, String lastName, String email, String dob, boolean sex, String phoneNumber, EStudentStatus status, String majorId) {
+    public StudentDTO(String id, String firstName, String lastName, String email, String dob, int sex, String phoneNumber, String status, String majorId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,11 +66,11 @@ public class StudentDTO {
         this.dob = dob;
     }
 
-    public boolean isSex() {
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
@@ -82,11 +82,11 @@ public class StudentDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public EStudentStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(EStudentStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

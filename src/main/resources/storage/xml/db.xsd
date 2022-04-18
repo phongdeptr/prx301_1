@@ -64,7 +64,7 @@
             </xs:element>
             <xs:element name="sex">
                 <xs:simpleType>
-                    <xs:restriction base="xs:int">
+                    <xs:restriction base="xs:integer">
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<db xmlns="https://www.se140633.com/schema/db_schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.se140633.com/schema/db_schema db.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><db xmlns="https://www.se140633.com/schema/db_schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.se140633.com/schema/db_schema db.xsd">
     <majors>
         <major>
             <majorId>GD</majorId>
@@ -9011,5 +9010,7 @@
             <phone>02222222</phone>
             <status>study</status>
         </student>
+    <student><firstName>Nguyen </firstName><lastName>Tin</lastName><email>tin123456bim@gmail.com</email><dob>2000-05-04</dob><sex>1</sex><phone>0773114946</phone><status>study</status></student><student ID=""><firstName>Nguyen </firstName><lastName>Tin</lastName><email>tin123456bim@gmail.com</email><dob>2000-05-04</dob><sex>1</sex><phone>0773114946</phone><status>study</status></student>
     </students>
+
 </db>

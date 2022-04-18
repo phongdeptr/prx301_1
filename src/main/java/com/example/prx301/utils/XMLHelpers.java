@@ -40,7 +40,7 @@ public class XMLHelpers {
     public String generateXMLData(){
         initXMLData();
         String pathForGeneratedXML = context.getRealPath("/storage/uploadXml/");
-        pathForGeneratedXML = "C:\\Users\\ADMIN\\Desktop\\New folder\\prx301\\src\\main\\resources\\storage\\xml" + appName + ".xml";
+        pathForGeneratedXML = "D:\\FPTU\\XML\\prx301_1\\src\\main\\resources\\storage\\xml" + appName + ".xml";
         try{
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -86,13 +86,13 @@ public class XMLHelpers {
                 dob.appendChild(document.createTextNode(studentDTO.getDob()));
 
                 Element sex = document.createElement("sex");
-                sex.appendChild(document.createTextNode(studentDTO.isSex()?"true":"false"));
+                sex.appendChild(document.createTextNode(String.valueOf(studentDTO.getSex())));
 
                 Element phone = document.createElement("phone");
                 phone.appendChild(document.createTextNode(studentDTO.getPhoneNumber()));
 
                 Element status = document.createElement("status");
-                status.appendChild(document.createTextNode(studentDTO.getStatus().getName()));
+                status.appendChild(document.createTextNode(studentDTO.getStatus()));
 
                 student.appendChild(firstName);
                 student.appendChild(lastName);
@@ -151,25 +151,35 @@ public class XMLHelpers {
         }
         if(studentDTOList.isEmpty()){
             for(int i = 1; i <= 1000; i++){
+                String[] names = {"Tin", "Phong", "Nhan", "Bao", "Khoa", "Hung", "Toan", "Hieu", "Duy", "Loc"};
+                int index = (int) (Math.random() * names.length);
+                String name = names[index];
+
+                String[] lastnames = {"Nguyen", "Pham", "Tran", "Le", "Khoa", "Nguyen Anh", "Le Thanh", "Nguyen Huu", "Dao Ba", "Truong Anh", "Ly Tran"};
+                int indexx = (int) (Math.random() * names.length);
+                String lastname = lastnames[indexx];
+
+                String email = name + i + "@gmail.com";
+
                 StudentDTO dto = new StudentDTO();
                 dto.setId("SE"+i);
                 if(i % 2 == 0){
-                    dto.setFirstName("Phong");
-                    dto.setLastName("Hoang Thanh");
+                    dto.setFirstName(name);
+                    dto.setLastName(lastname);
                     dto.setDob("2000-06-02");
                     dto.setMajorId("SE");
-                    dto.setEmail("phonght@gmail.com");
+                    dto.setEmail(email);
                     dto.setPhoneNumber("02222222");
                 }else{
-                    dto.setFirstName("Tin");
-                    dto.setLastName("Nguyen Thanh");
+                    dto.setFirstName(name);
+                    dto.setLastName(lastname);
                     dto.setDob("2000-04-02");
-                    dto.setEmail("tinnt@gmail.com");
+                    dto.setEmail(email);
                     dto.setMajorId("GD");
                     dto.setPhoneNumber("0010101");
                 }
-                dto.setSex(true);
-                dto.setStatus(EStudentStatus.STUDYING);
+                dto.setSex(1);
+                dto.setStatus("study");
                 studentDTOList.add(dto);
             }
         }
