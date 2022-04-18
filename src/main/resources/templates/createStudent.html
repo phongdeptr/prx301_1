@@ -7,38 +7,41 @@
 <body>
 <h2>Create new Student</h2>
 <form action="http://localhost:8080/create" th:object="${student}" method="POST">
-    <label for="id"></label>
-    <input type="text" id="id" name="ID"/>
+    <label for="id">ID</label><br/>
+    <input type="text" id="id" name="id" /><br/>
 
-    <label for="firstName"></label>
-    <input type="text" id="firstName" name="firstName">
+    <label for="firstName"> First name</label><br/>
+    <input type="text" id="firstName" name="firstName"><br/>
 
-    <label for="lastName"></label>
-    <input type="text" id="lastName" name="lastName">
+    <label for="lastName"> Last name</label><br/>
+    <input type="text" id="lastName" name="lastName"><br/>
 
-    <label for="email"></label>
-    <input type="text" id="email" name="email">
+    <label for="email">Email</label><br/>
+    <input type="text" id="email" name="email"><br/>
 
-    <label for="dob"></label>
-    <input type="text" id="dob" name="dob">
+    <label for="dob">Date of birth</label><br/>
+    <input type="text" id="dob" name="dob"><br/>
 
-    <label for="sex"></label>
-    <input type="text"  id="sex" name="sex">
+    <label for="sex">Sex</label><br/>
+    <input type="text"  id="sex" name="sex"><br/>
 
-    <label for="phoneNumber"></label>
-    <input type="text" id="phoneNumber" name="phoneNumber">
+    <label for="phoneNumber">Phone number</label><br/>
+    <input type="text" id="phoneNumber" name="phoneNumber"><br/>
 
-    <label for="status"></label>
+    <label for="status">Status</label><br/>
     <select id ="status" name="status">
-        <option th:value="study"/>
-        <option th:value="graduated"/>
-        <option th:value="dropdown"/>
-    </select>
+        <option th:value="study">study</option>
+        <option th:value="graduated">graduated</option>
+        <option th:value="dropout">dropout</option>
+    </select><br/>
 
-    <label for="lastName"></label>
-    <select name="majorId">
-        <option name=""/>
-    </select>
+    <label for="Major">Major</label><br/>
+    <select name="majorId", id="Major">
+        <option value="SE">Software Engineering</option>
+        <option value="GD">Graphic Design</option>
+    </select><br/>
+
+    <input type="submit" id="submit" name="create"/>
 
 </form>
 

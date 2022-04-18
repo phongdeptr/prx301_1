@@ -33,46 +33,44 @@ public class StudentDOM {
         Node student = root.getChildNodes().item(3);
         System.out.println("test: "+student.getNodeName());
 
+        System.out.println("id: "+dto.getId());
+        System.out.println("major: "+dto.getMajorId());
+
         Collection<StudentDTO> servers = new ArrayList<StudentDTO>();
         servers.add(dto);
-        servers.stream().forEach((studentDTO -> {
-            
-        }));
-//        for (StudentDTO server : servers) {
-//            // server elements
-//            Element newServer = document.createElement("student");
-//            newServer.setAttribute("ID", server.getId());
-//
-//            Element firstname = document.createElement("firstName");
-//            firstname.appendChild(document.createTextNode(server.getFirstName()));
-//            newServer.appendChild(firstname);
-//
-//            Element lastName = document.createElement("lastName");
-//            lastName.appendChild(document.createTextNode(server.getLastName()));
-//            newServer.appendChild(lastName);
-//
-//            Element email = document.createElement("email");
-//            email.appendChild(document.createTextNode(server.getEmail()));
-//            newServer.appendChild(email);
-//
-//            Element dob = document.createElement("dob");
-//            dob.appendChild(document.createTextNode(server.getDob()));
-//            newServer.appendChild(dob);
-//
-//            Element sex = document.createElement("sex");
-//            sex.appendChild(document.createTextNode(String.valueOf(server.getSex())));
-//            newServer.appendChild(sex);
-//
-//            Element phone = document.createElement("phone");
-//            phone.appendChild(document.createTextNode(server.getPhoneNumber()));
-//            newServer.appendChild(phone);
-//
-//            Element status = document.createElement("status");
-//            status.appendChild(document.createTextNode(String.valueOf(server.getStatus())));
-//            newServer.appendChild(status);
-//
-//            student.appendChild(newServer);
-//        }
+        Element newServer = document.createElement("student");
+            newServer.setAttribute("ID", dto.getId());
+            newServer.setAttribute("majorId", dto.getMajorId());
+
+            Element firstname = document.createElement("firstName");
+            firstname.appendChild(document.createTextNode(dto.getFirstName()));
+            newServer.appendChild(firstname);
+
+            Element lastName = document.createElement("lastName");
+            lastName.appendChild(document.createTextNode(dto.getLastName()));
+            newServer.appendChild(lastName);
+
+            Element email = document.createElement("email");
+            email.appendChild(document.createTextNode(dto.getEmail()));
+            newServer.appendChild(email);
+
+            Element dob = document.createElement("dob");
+            dob.appendChild(document.createTextNode(dto.getDob()));
+            newServer.appendChild(dob);
+
+            Element sex = document.createElement("sex");
+            sex.appendChild(document.createTextNode(String.valueOf(dto.getSex())));
+            newServer.appendChild(sex);
+
+            Element phone = document.createElement("phone");
+            phone.appendChild(document.createTextNode(dto.getPhoneNumber()));
+            newServer.appendChild(phone);
+
+            Element status = document.createElement("status");
+            status.appendChild(document.createTextNode(String.valueOf(dto.getStatus())));
+            newServer.appendChild(status);
+
+            student.appendChild(newServer);
 
         DOMSource source = new DOMSource(document);
 
