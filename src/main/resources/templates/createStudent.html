@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new Student</title>
+</head>
+<body>
+<form>
+    <label for="id"></label>
+    <input type="text" id="id" name="ID"/>
+
+    <label for="firstName"></label>
+    <input type="text" id="firstName" name="firstName">
+
+    <label for="lastName"></label>
+    <input type="text" id="lastName" name="lastName">
+
+    <label for="email"></label>
+    <input type="text" id="email" name="email">
+
+    <label for="dob"></label>
+    <input type="text" id="dob" name="dob">
+
+    <label for="sex"></label>
+    <input type="text" id="sex" name="sex">
+    </br>
+    <div th:if="${studentError}">
+        <p th:text="${studentError.getSexErr()}"></p>
+    </div>
+
+    <label for="phoneNumber"></label>
+    <input type="text" id="phoneNumber" value="${newStudent.}" name="phoneNumber">
+
+    <!--    <label for="status"></label>-->
+    <!--    <select id ="status" name="status">-->
+    <!--        <option th:value=""/>-->
+    <!--        <option th:value=""/>-->
+    <!--        <option th:value=""/>-->
+    <!--    </select>-->
+
+    <!--    <label for="lastName"></label>-->
+    <!--    <select name="majorId">-->
+    <!--        <option name=""/>-->
+    <!--    </select>-->
+    <!--</form>-->
+</form>
+</body>
+</html>

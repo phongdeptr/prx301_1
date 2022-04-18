@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+    <style>
+        table.GeneratedTable {
+            width: 100%;
+            background-color: #ffffff;
+            border-collapse: collapse;
+            border-width: 2px;
+            border-color: #ffcc00;
+            border-style: solid;
+            color: #000000;
+        }
+
+        table.GeneratedTable td, table.GeneratedTable th {
+            border-width: 2px;
+            border-color: #ffcc00;
+            border-style: solid;
+            padding: 3px;
+        }
+
+        table.GeneratedTable thead {
+            background-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+<form action="/find/students" method="get">
+    <label for="searchStudent">Student</label>
+    <input id="searchStudent" name="keyword" th:value="${lastKeyWord}">
+    <input type="submit" value="Search student">
+</form>
+
+<form action="/students/createStudent" method="get">
+    <input type="submit" value="Add New">
+</form>
+<table class="GeneratedTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Date of Birth</th>
+        <th>Sex</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th>Major</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td><input type="text" name="ID" th:value="${student.getId()}" readonly/></td>
+        <td><input type="text" name="firstName" th:value="${student.getFirstName()}"></td>
+        <td><input type="text" name="lastName" th:value="${student.getLastName()}"></td>
+        <td><input type="text" name="email" th:value="${student.getEmail()}"></td>
+        <td><input type="text" name="dob" th:value="${student.getDob()}"></td>
+        <td><input type="text" name="sex" th:value="${student.isSex() == true ? 'male':'female'}"></td>
+        <td><input type="text" name="phoneNumber" th:value="${student.getPhoneNumber()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
