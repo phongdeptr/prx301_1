@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Student</title>
+</head>
+<body>
+<form action="/students" method="post" th:object="${student}">
+  <label for="firstName">First Name</label>
+  <br/>
+  <input type="text" id="firstName" name="firstName" th:value="${student.getFirstName()}" required/>
+  </br>
+
+  <label for="lastName">Last Name</label>
+  <br/>
+  <input type="text" id="lastName" name="lastName" th:value="${student.getLastName()}" required/>
+  <br/>
+
+  <label for="email">Email</label>
+  <br/>
+  <input type="email" id="email" name="email" th:value="${student.getEmail()}" required/>
+  <br/>
+
+  <label for="dob">Birth Date</label>
+  <br/>
+  <input type="date" id="dob" name="dob" th:value="${student.getDob()}" required/>
+  <br/>
+
+  <label for="sex">Sex</label>
+  <br/>
+  <select type="text" id="sex" name="sex" required>
+    <option value="true">Male</option>
+    <option value="false">Female</option>
+  </select>
+  <br/>
+  <label for="phoneNumber">Phone</label>
+  <br/>
+  <input type="text" id="phoneNumber" th:value="${student.getPhoneNumber()}" name="phoneNumber" required/>
+  <br/>
+
+  <label for="major">Major</label>
+  <br/>
+  <select name="majorId" id="major" required>
+    <div th:each="major : ${majors}">
+      <option th:value="${major.getId()}" th:text="${major.getName()}"></option>
+    </div>
+  </select>
+  </br>
+
+  <input type="hidden" value="study" name="status"/>
+  </br>
+
+  <button type="submit">Add Student</button>
+</form>
+</body>
+</html>

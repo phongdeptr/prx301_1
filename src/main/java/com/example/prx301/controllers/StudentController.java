@@ -1,80 +1,73 @@
 package com.example.prx301.controllers;
 
-import com.example.prx301.dto.DB;
 import com.example.prx301.dto.StudentDTO;
-import com.example.prx301.dto.StudentError;
+import com.example.prx301.dto.StudentValidationResult;
+import com.example.prx301.exceptions.StudentException;
 import com.example.prx301.services.StudentService;
-import com.example.prx301.utils.DomHelper;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-@Controller
-@SessionAttributes({"students","student","studentError"})
+@RestController
 public class StudentController {
-    @Autowired
     private StudentService studentService;
-    @ModelAttribute("lastKeyWord")
-    private String lastKeyword(){
-        return "";
-    }
-    @ModelAttribute("student")
-    public StudentDTO student(){
-        return new StudentDTO();
-    }
-    @ModelAttribute("studentError")
-    public StudentError error(){
-        return null;
-    }
-    @ModelAttribute("students")
-    public List<StudentDTO> studentList() {
-        return studentService.getStudent().getStudents();
-    }
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
-    @PostMapping
-    public String createStudent(StudentDTO student, ModelMap modelMap){
-
-        StudentError studentError = studentService.addStudent(student);
-        modelMap.addAttribute("studentError", studentError);
-        modelMap.addAttribute("newStudent", student);
-        return "createStudent";
-    }
-
-    @GetMapping("students/{page}")
-    public String redirect(@PathVariable("page") String location){
-        switch (location){
-            case "createStudent":{
-                return "createStudent";
-            } case "updateStudent":{
-                return "updateStudent";
-            }
-        }
-        return "redirect:students";
-    }
-
     @GetMapping("/students")
-    public String viewStudent(){
-        return "studentManagement";
+    @ApiOperation(value = "find student by first name or lastname",
+    response = StudentDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "not found keyword"),
+            @ApiResponse(code = 404, message = "Not found student"),
+    })
+    public List<StudentDTO> findStudent(@RequestParam("keyword") String keyword) {
+       return studentService.searchStudent(keyword);
     }
 
-    @GetMapping("/find/students")
-    public String findStudent(@RequestParam("keyword") String keyword, @ModelAttribute("lastKeyWord") String lastKeyword, @ModelAttribute("students") List<StudentDTO> studentResult){
-        lastKeyword = keyword;
-        List<StudentDTO> studentDTOS = studentService.searchStudent(keyword);
-        studentDTOS.stream().map(student -> student.getFirstName()).forEach(System.out::println);
-        return "studentManagement";
+    @PostMapping("/students")
+    @ApiOperation(value = "create student",
+            response = StudentDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Create Student SUCCESS"),
+            @ApiResponse(code = 400, message = "not found keyword"),
+            @ApiResponse(code = 404, message = "Not found student"),
+    })
+    public StudentDTO createStudent(StudentDTO studentDTO) throws StudentException {
+        return studentService.addStudent(studentDTO);
+    }
+
+    @PutMapping("/students")
+    @ApiOperation(value = "update student",
+            response = StudentDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Update student info "),
+            @ApiResponse(code = 400, message = "Student update info wrong format"),
+            @ApiResponse(code = 404, message = "Not found student to update"),
+    })
+    public StudentDTO updateStudent(StudentDTO dto) throws StudentException {
+        StudentDTO updateStudent = studentService.updateStudent(dto);
+        return (updateStudent);
+    }
+
+    @DeleteMapping("/students/{studentId}")
+    @ApiOperation(value = "delete student",
+            response = StudentDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Delete Sucess"),
+            @ApiResponse(code = 400, message = "Student is wrong"),
+            @ApiResponse(code = 404, message = "Student not found"),
+    })
+    public String deteteStudent(@PathVariable("studentId") String studentId) {
+        String deleteMessage = studentService.removeStudent(studentId);
+        return deleteMessage;
     }
 }

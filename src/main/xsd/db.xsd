@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="https://www.w3schools.com/xsd"
-           xmlns="https://www.w3schools.com/xsd"
+           targetNamespace="https://phonght.com/xsd"
+           xmlns="https://phonght.com/xsd"
            elementFormDefault="qualified">
     <xs:element name="db" type="dbType"/>
     <xs:complexType name="dbType">

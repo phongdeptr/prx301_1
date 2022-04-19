@@ -15,8 +15,7 @@ public class XPathConfiguration {
         return factory;
     }
     @Bean
-    public XPath xPath(){
-        XPathFactory factory = xPathFactory();
+    public XPath xPath(XPathFactory factory){
         XPath xPath = factory.newXPath();
         return xPath;
     }

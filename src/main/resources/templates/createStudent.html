@@ -5,44 +5,51 @@
     <title>Create new Student</title>
 </head>
 <body>
-<form>
-    <label for="id"></label>
-    <input type="text" id="id" name="ID"/>
-
-    <label for="firstName"></label>
-    <input type="text" id="firstName" name="firstName">
-
-    <label for="lastName"></label>
-    <input type="text" id="lastName" name="lastName">
-
-    <label for="email"></label>
-    <input type="text" id="email" name="email">
-
-    <label for="dob"></label>
-    <input type="text" id="dob" name="dob">
-
-    <label for="sex"></label>
-    <input type="text" id="sex" name="sex">
+<h2>Create new Student Form</h2>
+<form action="/students" method="post" th:object="${student}">
+    <label for="firstName">First Name</label>
+    <br/>
+    <input type="text" id="firstName" name="firstName" th:value="${student.getFirstName()}" required/>
     </br>
-    <div th:if="${studentError}">
-        <p th:text="${studentError.getSexErr()}"></p>
-    </div>
 
-    <label for="phoneNumber"></label>
-    <input type="text" id="phoneNumber" value="${newStudent.}" name="phoneNumber">
+    <label for="lastName">Last Name</label>
+    <br/>
+    <input type="text" id="lastName" name="lastName" th:value="${student.getLastName()}" required/>
+    <br/>
 
-    <!--    <label for="status"></label>-->
-    <!--    <select id ="status" name="status">-->
-    <!--        <option th:value=""/>-->
-    <!--        <option th:value=""/>-->
-    <!--        <option th:value=""/>-->
-    <!--    </select>-->
+    <label for="email">Email</label>
+    <br/>
+    <input type="email" id="email" name="email" th:value="${student.getEmail()}" required/>
+    <br/>
 
-    <!--    <label for="lastName"></label>-->
-    <!--    <select name="majorId">-->
-    <!--        <option name=""/>-->
-    <!--    </select>-->
-    <!--</form>-->
+    <label for="dob">Birth Date</label>
+    <br/>
+    <input type="date" id="dob" name="dob" th:value="${student.getDob()}" required/>
+    <br/>
+
+    <label for="sex">Sex</label>
+    <br/>
+    <select type="text" id="sex" name="sex" required>
+        <option value="true">Male</option>
+        <option value="false">Female</option>
+    </select>
+    <br/>
+    <label for="phoneNumber">Phone</label>
+    <br/>
+    <input type="text" id="phoneNumber" th:value="${student.getPhoneNumber()}" name="phoneNumber" required/>
+    <br/>
+
+    <label for="major">Major</label>
+    <br/>
+    <select name="majorId" id="major" th:each="studentMajor:${majors}" required>
+            <option th:value="${studentMajor.getId()}" th:text="${major.getName()}"></option>
+    </select>
+    </br>
+
+    <input type="hidden" value="study" name="status"/>
+    </br>
+
+    <button type="submit">Add Student</button>
 </form>
 </body>
 </html>

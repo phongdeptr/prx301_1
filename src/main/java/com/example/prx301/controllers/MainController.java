@@ -16,6 +16,6 @@ import java.io.IOException;
 public class MainController {
     @GetMapping
     public String home(){
-        return "redirect:students";
+        return "home";
     }
 }

@@ -2,12 +2,10 @@ package com.example.prx301.utils;
 
 import com.example.prx301.dto.DB;
 import com.example.prx301.dto.EStudentStatus;
+import com.example.prx301.dto.MajorDTO;
 import com.example.prx301.dto.StudentDTO;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,8 +49,9 @@ public class DomHelper {
     public static DB loadXML(Document srcDoc) throws XPathExpressionException {
         DB db = null;
         List<StudentDTO> studentList = null;
+        List<MajorDTO> majorList = null;
         String id="",majorId = "",firstName = "", lastName="", email="", dob="", phone="",sex="";
-        EStudentStatus status = null;
+        String status = null;
         String xpathStudent = "//student";
         String xpathMajor = "//major";
         XPathFactory factory = XPathFactory.newInstance();
@@ -88,6 +87,7 @@ public class DomHelper {
                         phone = subElement.getTextContent();
                         break;
                     } case "status":{
+                        status = subElement.getTextContent();
                         break;
                     }
                 }
@@ -98,11 +98,19 @@ public class DomHelper {
             }
             studentList.add(dto);
         }//end for student ele list
+        for (int i = 0; i < majors.getLength(); i++) {
+            Element major= (Element)majors.item(i);
+            MajorDTO dto = XMLHelpers.createMajorDtoFromElement(major);
+            if(majorList == null){
+                majorList = new ArrayList<>();
+            }
+            majorList.add(dto);
+        }
         if(db == null){
             db = new DB();
         }
         db.setStudents(studentList);
-        System.out.println("Size of student: "+db.getStudents().size());
+        db.setMajors(majorList);
         return db;
     }
 
