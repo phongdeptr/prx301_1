@@ -66,9 +66,9 @@ public class XMLHelpers {
                 Element student = document.createElement("student");
                 Attr majorId = document.createAttribute("majorId");
                 Attr id = document.createAttribute("ID");
-                majorId.setValue(studentDTO.getMajorId());
-                id.setValue(studentDTO.getMajorId() + majorTotalStudent.get(studentDTO.getMajorId()));
-                majorTotalStudent.put(studentDTO.getMajorId(),majorTotalStudent.get(studentDTO.getMajorId())+1);
+                majorId.setValue(studentDTO.getMajor().getId());
+                id.setValue(studentDTO.getMajor().getId() + majorTotalStudent.get(studentDTO.getMajor().getId()));
+                majorTotalStudent.put(studentDTO.getMajor().getId(),majorTotalStudent.get(studentDTO.getMajor().getId())+1);
                 student.setAttributeNode(id);
                 student.setAttributeNode(majorId);
                 Element firstName = document.createElement("firstName");
@@ -143,18 +143,24 @@ public class XMLHelpers {
                 StudentDTO dto = new StudentDTO();
                 dto.setId("SE"+i);
                 if(i % 2 == 0){
+                    MajorDTO newSEMajor = new MajorDTO();
+                    newSEMajor.setName("Software Engineer");
+                    newSEMajor.setId("SE");
                     dto.setFirstName("Phong");
                     dto.setLastName("Hoang Thanh");
                     dto.setDob("2000-06-02");
-                    dto.setMajorId("SE");
+                    dto.setMajor(newSEMajor);
                     dto.setEmail("phonght@gmail.com");
                     dto.setPhoneNumber("02222222");
                 }else{
+                    MajorDTO newGDMajor = new MajorDTO();
+                    newGDMajor.setName("Graphic Design");
+                    newGDMajor.setId("GD");
                     dto.setFirstName("Tin");
                     dto.setLastName("Nguyen Thanh");
                     dto.setDob("2000-04-02");
                     dto.setEmail("tinnt@gmail.com");
-                    dto.setMajorId("GD");
+                    dto.setMajor(newGDMajor);
                     dto.setPhoneNumber("0010101");
                 }
                 dto.setSex(true);
@@ -215,7 +221,7 @@ public class XMLHelpers {
         student.appendChild(sex);
         student.appendChild(phone);
         student.appendChild(status);
-        student.setAttribute("majorId",dto.getMajorId());
+        student.setAttribute("majorId",dto.getMajor().getId());
         student.setAttribute("ID", dto.getId());
         return student;
     }

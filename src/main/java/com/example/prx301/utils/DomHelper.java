@@ -91,8 +91,10 @@ public class DomHelper {
                         break;
                     }
                 }
-            }//end for student ele
-            StudentDTO dto = new StudentDTO(id, firstName, lastName, email, dob, sex.equalsIgnoreCase("male") ? true : false, phone, status, majorId);
+            }//end for student
+            MajorDTO majorDTO = new MajorDTO();
+            majorDTO.setId(majorId);
+            StudentDTO dto = new StudentDTO(id, firstName, lastName, email, dob, sex.equalsIgnoreCase("male") ? true : false, phone, status, majorDTO);
             if(studentList == null){
                 studentList = new ArrayList<>();
             }

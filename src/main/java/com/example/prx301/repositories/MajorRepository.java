@@ -1,7 +1,4 @@
 package com.example.prx301.repositories;
-
-import com.example.prx301.dto.MajorDTO;
-import com.example.prx301.dto.StudentError;
 import com.example.prx301.errors.MajorError;
 
 import java.util.List;
