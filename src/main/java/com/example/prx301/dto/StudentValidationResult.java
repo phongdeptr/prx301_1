@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class StudentValidationResult {
+    private String idError;
     private String firstNameError;
     private String lastNameError;
     private String dobErr;

@@ -1,6 +1,9 @@
 package com.example.prx301.controllers;
 
+import com.example.prx301.exceptions.StudentException;
+import com.example.prx301.utils.XMLConverter;
 import com.example.prx301.utils.XMLHelpers;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -12,29 +15,30 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.servlet.ServletContext;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 
-@Controller
-@SessionAttributes("validateResult")
+@RestController
+@RequestMapping("api/v1/file")
 public class FileController {
-    @Autowired
-    private ServletContext context;
-    @Autowired
     private XMLHelpers helpers;
-    private Path fileStorageLocation = Path.of("/");
+    private XMLConverter converter;
 
-    @ModelAttribute(name = "validateXMLResult")
-    public void order(Model model) {
-        model.addAttribute("validateResult","");
+    public FileController(XMLHelpers helpers, XMLConverter converter) {
+        this.helpers = helpers;
+        this.converter = converter;
     }
 
-    @GetMapping("api/v1/file")
+    @GetMapping
     public ResponseEntity<?> getXMLFile() {
         try {
             String s = helpers.generateXMLData();
@@ -52,9 +56,38 @@ public class FileController {
         }
         return null;
     }
-    @PostMapping("api/v1/file")
+
+    @GetMapping("/pdf")
+    public ResponseEntity<?> exportToPdf() {
+        try {
+            String s = converter.convertToPDF();
+            System.out.println("generated file path: " + s);
+            Path filePath = Path.of(s);
+            Resource resource = new UrlResource(filePath.toUri());
+            System.out.println("firstname: "+filePath.toString());
+            if (resource.exists()) {
+                String contentType = "application/pdf";
+                return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+            } else {
+            }
+        } catch (MalformedURLException ex) {
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException parserConfigurationException) {
+            parserConfigurationException.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @PostMapping
     public String fileUpload(@RequestParam("schema") MultipartFile schemaFile, @RequestParam("xml") MultipartFile xmlFIle, ModelMap model) throws IOException {
-        context.getContextPath();
         String pathOfUploadXMl = "C:\\Users\\ADMIN\\Desktop\\New folder\\prx301\\src\\main\\resources\\storage\\xml\\";
         File xml = new File(pathOfUploadXMl + xmlFIle.getOriginalFilename());
 
@@ -79,5 +112,29 @@ public class FileController {
             e.printStackTrace();
         }
         return "home";
+    }
+
+    @PutMapping
+    public String importXMLFile(@RequestParam("xml") MultipartFile xmlFIle) throws IOException { ;
+        String pathOfUploadXMl = "src/main/xml/importXML"+xmlFIle.getOriginalFilename();
+        File xml = new File(pathOfUploadXMl);
+        xml.createNewFile();
+        FileOutputStream outputStream = new FileOutputStream(xml);
+        outputStream.write(xmlFIle.getBytes());
+        outputStream.close();
+        try {
+            helpers.importXMLToDB(xml);
+        } catch (ParserConfigurationException parserConfigurationException) {
+            parserConfigurationException.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (StudentException e) {
+            e.printStackTrace();
+        } catch (TransformerException transformerException) {
+            transformerException.printStackTrace();
+        }
+        return "Import";
     }
 }

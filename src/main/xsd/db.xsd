@@ -70,7 +70,7 @@
             <xs:element name="phone">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:pattern value="[0-9]{5,11}"></xs:pattern>
+                        <xs:pattern value="[0-9]{5,11}|[(][0-9]{3,3}[)] [0-9]{3,3}-[0-9]{4,4}"></xs:pattern>
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>

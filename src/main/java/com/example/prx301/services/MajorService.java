@@ -10,8 +10,11 @@ import java.util.List;
 
 @Service
 public class MajorService {
-    @Autowired
-    private MajorRepository<MajorDTO, MajorError> majorRepository;
+    private MajorRepository<MajorDTO> majorRepository;
+
+    public MajorService(MajorRepository<MajorDTO> majorRepository) {
+        this.majorRepository = majorRepository;
+    }
 
     public List<MajorDTO> loadMajor(){
        return majorRepository.loadMajor();

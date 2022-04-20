@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DomHelper {
@@ -50,7 +51,7 @@ public class DomHelper {
         DB db = null;
         List<StudentDTO> studentList = null;
         List<MajorDTO> majorList = null;
-        String id="",majorId = "",firstName = "", lastName="", email="", dob="", phone="",sex="";
+        String id="",firstName = "", lastName="", email="", dob="", phone="",sex="";
         String status = null;
         String xpathStudent = "//student";
         String xpathMajor = "//major";
@@ -58,11 +59,20 @@ public class DomHelper {
         XPath xPath = factory.newXPath();
         NodeList students = (NodeList)xPath.compile(xpathStudent).evaluate(srcDoc, XPathConstants.NODESET);
         NodeList majors = (NodeList) xPath.compile(xpathMajor).evaluate(srcDoc, XPathConstants.NODESET);
+        for (int i = 0; i < majors.getLength(); i++) {
+            Element major= (Element)majors.item(i);
+            MajorDTO dto = XMLHelpers.createMajorDtoFromElement(major);
+            if(majorList == null){
+                majorList = new ArrayList<>();
+            }
+            majorList.add(dto);
+        }
         for (int i = 0; i < students.getLength(); i++) {
             Node item = students.item(i);
             NamedNodeMap attributes = item.getAttributes();
             NodeList childNodes = item.getChildNodes();
             id = attributes.getNamedItem("ID").getNodeValue();
+            String majorId = attributes.getNamedItem("majorId").getNodeValue();
             System.out.println(id);
             for (int j = 0; j < childNodes.getLength(); j++) {
                 Node subElement = childNodes.item(j);
@@ -92,22 +102,15 @@ public class DomHelper {
                     }
                 }
             }//end for student
-            MajorDTO majorDTO = new MajorDTO();
-            majorDTO.setId(majorId);
+            MajorDTO majorDTO = majorList.stream()
+                    .filter((currMajor) -> currMajor.getId().trim().equalsIgnoreCase(majorId.trim()))
+                    .findFirst().get();
             StudentDTO dto = new StudentDTO(id, firstName, lastName, email, dob, sex.equalsIgnoreCase("male") ? true : false, phone, status, majorDTO);
             if(studentList == null){
                 studentList = new ArrayList<>();
             }
             studentList.add(dto);
         }//end for student ele list
-        for (int i = 0; i < majors.getLength(); i++) {
-            Element major= (Element)majors.item(i);
-            MajorDTO dto = XMLHelpers.createMajorDtoFromElement(major);
-            if(majorList == null){
-                majorList = new ArrayList<>();
-            }
-            majorList.add(dto);
-        }
         if(db == null){
             db = new DB();
         }

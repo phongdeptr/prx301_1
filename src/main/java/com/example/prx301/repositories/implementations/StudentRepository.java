@@ -204,11 +204,22 @@ public class StudentRepository implements StudentXMLRepository<StudentDTO, Stude
                 MajorDTO majorDTO = new MajorDTO();
                 majorDTO.setId(majorId);
                 try {
-                    Node majorIdNode = (Node)xPath.evaluate("//major/majorId="+majorId, document, XPathConstants.NODE);
-                    Element major = (Element) majorIdNode.getParentNode();
-                    NodeList majorNameNodes = major.getElementsByTagName("majorName");
-                    String majorName = majorNameNodes.item(0).getTextContent();
-                    majorDTO.setName(majorName);
+                    NodeList majors = (NodeList)xPath.evaluate("//major", document, XPathConstants.NODESET);
+                    for (int j = 0; j < majors.getLength(); j++) {
+                        Node major = majors.item(j);
+                        if(major.getNodeName().equals("major")){
+                            NodeList childs = major.getChildNodes();
+                            for (int k = 0; k < childs.getLength(); k++) {
+                                String name = childs.item(k).getNodeName();
+                                if(name.equals("majorId") && childs.item(k).getTextContent().contains(majorId)){
+                                    majorDTO.setId(childs.item(k).getTextContent());
+                                }
+                                if(name.equals("majorName")){
+                                    majorDTO.setName(childs.item(k).getTextContent());
+                                }
+                            }
+                        }
+                    }
                 } catch (XPathExpressionException e) {
                     e.printStackTrace();
                 }//end creation of major on student;
