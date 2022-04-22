@@ -26,13 +26,17 @@ public class StudentValidator {
     }
 
     public StudentValidationResult checkStudent(StudentDTO dto) throws XPathExpressionException {
+        System.out.println("DTO: " + dto);
         StudentValidationResult validationResult = null;
         String firstName = dto.getFirstName();
         String lastName = dto.getLastName();
         String email = dto.getEmail();
         String dob = dto.getDob();
         String phone = dto.getPhoneNumber();
-        String majorId = dto.getMajor().getId();
+        String majorId="";
+        if(dto.getMajor() != null){
+            majorId = dto.getMajor().getId();
+        }
         EStudentStatus status = EStudentStatus.valueOfStr(dto.getStatus());
         Pattern pattern = null;
         boolean hasErr = false;
@@ -45,6 +49,7 @@ public class StudentValidator {
             Matcher matcher = pattern.matcher(firstName);
             if(!matcher.matches()){
                 firstNameError = "First name must only contain a-z A-Z";
+                hasErr = true;
             }
         }
         if(lastName != null &&"".equals(lastName)){
@@ -55,6 +60,7 @@ public class StudentValidator {
             Matcher matcher = pattern.matcher(lastName);
             if(!matcher.matches()){
                 lastNameError = "Last name must only contain a-z A-Z";
+                hasErr = true;
             }
         }//end check lastname.
 
@@ -63,9 +69,10 @@ public class StudentValidator {
             firstNameError = "Dob must not be empty";
         }else{
             pattern = Pattern.compile("([0-9]{4,4})-(0[1-9]|1[012])-(0[1-9]|[1-2][0-9]|3[0-1])");
-            Matcher matcher = pattern.matcher(lastName);
+            Matcher matcher = pattern.matcher(dob);
             if(!matcher.matches()){
                 dobErr = "Dob must have format yyyy-mm-dd";
+                hasErr = true;
             }
         }//end check dob
 
@@ -74,9 +81,10 @@ public class StudentValidator {
             emailErr = "Email must not be empty";
         }else{
             pattern = Pattern.compile("^[a-zA-Z]([a-zA-Z0-9]{1,})@[a-zA-Z.]{1,}[a-zA-Z]$");
-            Matcher matcher = pattern.matcher(lastName);
+            Matcher matcher = pattern.matcher(email);
             if(!matcher.matches()){
                 emailErr = "Email wrong format";
+                hasErr = true;
             }
         }//end check email
 
@@ -84,7 +92,7 @@ public class StudentValidator {
             hasErr = true;
             phoneErr = "Phone must not empty";
         }{
-            pattern = Pattern.compile("^[0-9][0-9]{5,11}");
+            pattern = Pattern.compile("[0-9]{5,11}|[(][0-9]{3,3}[)] [0-9]{3,3}-[0-9]{4,4}");
             Matcher matcher = pattern.matcher(phone);
             phoneErr = matcher.matches()? "":"Phone number has wrong format";
         }

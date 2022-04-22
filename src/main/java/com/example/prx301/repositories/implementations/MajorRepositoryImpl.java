@@ -1,6 +1,7 @@
 package com.example.prx301.repositories.implementations;
 
 import com.example.prx301.dto.MajorDTO;
+import com.example.prx301.errors.MajorValidationResult;
 import com.example.prx301.exceptions.MajorException;
 import com.example.prx301.repositories.MajorRepository;
 import com.example.prx301.utils.DomHelper;
@@ -68,13 +69,14 @@ public class MajorRepositoryImpl implements MajorRepository<MajorDTO> {
             }
         }
         if(replaceMajor == null){
-            throw new MajorException("no major found with id: " + dto.getId());
+            MajorValidationResult result = new MajorValidationResult("ID of major is not exist",null);
+            throw new MajorException(result);
         }
         return dto;
     }
 
     @Override
-    public MajorDTO removeMajor(String majorId) throws MajorException {
+    public boolean removeMajor(String majorId) throws MajorException {
         NodeList majors = document.getElementsByTagName("major");
         Node major = null;
         for (int i = 0; i < majors.getLength(); i++) {
@@ -88,9 +90,7 @@ public class MajorRepositoryImpl implements MajorRepository<MajorDTO> {
                 }
             }
         }
-        if(major == null){
-            throw new MajorException("Not found major to be remove with id: " + majorId);
-        }
-        return null;
+
+        return major == null ? false:true;
     }
 }

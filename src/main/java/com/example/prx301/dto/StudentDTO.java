@@ -1,10 +1,11 @@
 package com.example.prx301.dto;
 
-import com.example.prx301.errors.MajorError;
+import com.example.prx301.entitties.Student;
 import lombok.Data;
 
-@Data
+import java.util.Optional;
 
+@Data
 public class StudentDTO {
     private String id;
     private String firstName;
@@ -29,5 +30,21 @@ public class StudentDTO {
         this.phoneNumber = phoneNumber;
         this.status = status;
         this.major = major;
+    }
+
+    public static Optional<StudentDTO> fromEntityToDto(Student myStudent){
+        Optional<StudentDTO> dtoOptional = Optional.empty();
+        StudentDTO targetDto = new StudentDTO();
+        targetDto.setId(myStudent.getId());
+        targetDto.setFirstName(myStudent.getFirstName());
+        targetDto.setLastName(myStudent.getLastName());
+        targetDto.setDob(myStudent.getDob());
+        targetDto.setMajor(new MajorDTO(myStudent.getMajorId(), null));
+        targetDto.setEmail(myStudent.getEmail());
+        targetDto.setSex(myStudent.isSex());
+        targetDto.setStatus(myStudent.getStatus());
+        targetDto.setPhoneNumber(myStudent.getPhoneNumber());
+        dtoOptional = Optional.of(targetDto);
+        return dtoOptional;
     }
 }

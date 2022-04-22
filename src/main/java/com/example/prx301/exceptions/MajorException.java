@@ -1,9 +1,11 @@
 package com.example.prx301.exceptions;
 
-public class MajorException extends Throwable{
-    private String message;
+import com.example.prx301.errors.MajorValidationResult;
 
-    public MajorException(String message) {
+public class MajorException extends RuntimeException {
+    private MajorValidationResult message;
+
+    public MajorException(MajorValidationResult message) {
         this.message = message;
     }
 }

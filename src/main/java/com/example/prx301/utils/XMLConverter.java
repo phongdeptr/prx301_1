@@ -1,10 +1,8 @@
 package com.example.prx301.utils;
 import com.example.prx301.dto.DB;
+import com.example.prx301.dto.MajorDTO;
 import com.example.prx301.dto.StudentDTO;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -38,18 +36,26 @@ public class XMLConverter {
         doc.setPageSize(PageSize.A3);
         doc.setMargins(1.0f,1.0f,1.0f,1.0f);
         doc.open();
-        PdfPTable table = new PdfPTable(9);
-        addTableHeader(table);
-        table.setWidths(new float[] {10,14,14,44,16,10,20,10,13});
+        PdfPTable studentTable = new PdfPTable(9);
+        addTableStudentHeader(studentTable);
+        studentTable.setWidths(new float[] {10,14,14,44,16,10,20,10,13});
         db.getStudents().forEach((student) ->{
-            addRows(table,student);
+            addStudentRows(studentTable,student);
         });
-        doc.add(table);
-        doc.close();;
+        PdfPTable majorTable = new PdfPTable(2);
+        addTableMajorHeader(majorTable);
+        majorTable.setWidths(new float[] {5,5});
+        db.getMajors().forEach((majorDTO) ->{
+            addMajorRows(majorTable,majorDTO);
+        });
+        doc.add(new Paragraph("Students "));
+        doc.add(studentTable);
+        doc.add(new Paragraph("Majors"));
+        doc.add(majorTable);
+        doc.close();
         return "src/pdf/output.pdf";
     }
-    private void addTableHeader(PdfPTable table) {
-
+    private void addTableStudentHeader(PdfPTable table) {
         Stream.of("ID", "firstName", "lastName", "email", "Date of birth",
                 "sex", "phone", "status", "majorName")
                 .forEach(columnTitle -> {
@@ -60,7 +66,7 @@ public class XMLConverter {
                     table.addCell(header);
                 });
     }
-    private void addRows(PdfPTable table, StudentDTO dto) {
+    private void addStudentRows(PdfPTable table, StudentDTO dto) {
         table.addCell(dto.getId());
         table.addCell(dto.getFirstName());
         table.addCell(dto.getLastName());
@@ -70,5 +76,19 @@ public class XMLConverter {
         table.addCell(dto.getPhoneNumber());
         table.addCell(dto.getStatus());
         table.addCell(dto.getMajor().getName());
+    }
+
+    private void addTableMajorHeader(PdfPTable table) {
+        Stream.of("ID", "name").forEach(columnTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    header.setBorderWidth(2);
+                    header.setPhrase(new Phrase(columnTitle));
+                    table.addCell(header);
+                });
+    }
+    private void addMajorRows(PdfPTable table, MajorDTO dto) {
+        table.addCell(dto.getId());
+        table.addCell(dto.getName());
     }
 }

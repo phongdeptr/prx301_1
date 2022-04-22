@@ -3,6 +3,7 @@ package com.example.prx301.controllers;
 import com.example.prx301.exceptions.StudentException;
 import com.example.prx301.utils.XMLConverter;
 import com.example.prx301.utils.XMLHelpers;
+import com.example.prx301.utils.XmlGenerator;
 import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -32,27 +33,29 @@ import java.nio.file.Path;
 public class FileController {
     private XMLHelpers helpers;
     private XMLConverter converter;
+    private XmlGenerator xmlGenerator;
 
-    public FileController(XMLHelpers helpers, XMLConverter converter) {
+    public FileController(XMLHelpers helpers, XMLConverter converter, XmlGenerator xmlGenerator) {
         this.helpers = helpers;
         this.converter = converter;
+        this.xmlGenerator = xmlGenerator;
     }
 
     @GetMapping
     public ResponseEntity<?> getXMLFile() {
         try {
-            String s = helpers.generateXMLData();
+            String s = xmlGenerator.generateDBXMLData();
             System.out.println("generated file path: " + s);
             Path filePath = Path.of(s);
             Resource resource = new UrlResource(filePath.toUri());
-            System.out.println("firstname: "+filePath.toString());
             if (resource.exists()) {
                 String contentType = "application/xml";
                 return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
             } else {
             }
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException | TransformerException | XPathExpressionException ex) {
+
         }
         return null;
     }
@@ -97,6 +100,7 @@ public class FileController {
         System.out.println("in upload file");
 
 
+        String result =null;
         schema.createNewFile();
         xml.createNewFile();
         try{
@@ -106,12 +110,12 @@ public class FileController {
             fout = new FileOutputStream(xml);
             fout.write(xmlFIle.getBytes());
             fout.close();
-            String result = XMLHelpers.validateXml(schema, xml);
+             result = XMLHelpers.validateXml(schema, xml);
             model.addAttribute("xmlValidateResult", result);
         } catch (Exception e){
             e.printStackTrace();
         }
-        return "home";
+        return result;
     }
 
     @PutMapping

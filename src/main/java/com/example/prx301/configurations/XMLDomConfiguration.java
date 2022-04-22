@@ -22,8 +22,13 @@ public class XMLDomConfiguration {
     @Value("${spring.application.name}")
     private String appName;
     @Bean
-    public File xmlDb(){
-        return new File("src/main/xml/"+appName+".xml");
+    public File xmlDb() throws IOException {
+        File file =  new File("src/main/xml/"+appName+".xml");
+        boolean exists = file.exists();
+        if(!exists){
+            file.createNewFile();
+        }
+        return file;
     }
 
     @Bean
@@ -40,27 +45,10 @@ public class XMLDomConfiguration {
     public Document document(DocumentBuilder documentBuilder) {
         Document newDoc = null;
         try {
-            newDoc = documentBuilder.parse(xmlDb());
-        } catch (IOException e) {
+            File xml = xmlDb();
+            newDoc = documentBuilder.parse(xml);
+        } catch (IOException | SAXException e) {
             e.printStackTrace();
-        }catch (Exception saxException) {
-            System.out.println(saxException.getMessage());
-            newDoc = documentBuilder.newDocument();
-            newDoc.createElement("db");
-            Element db = newDoc.createElement("db");
-            db.setAttribute("xmlns","https://phonght.com/xsd");
-            db.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
-            db.setAttribute("xsi:schemaLocation","https://phonght.com/xsd");
-            Element majors = newDoc.createElement("majors");
-            Element students = newDoc.createElement("students");
-            db.appendChild(majors);
-            db.appendChild(students);
-            newDoc.appendChild(db);
-            try {
-                XMLHelpers.saveXMLContent(newDoc,xmlDb());
-            } catch (TransformerException transformerException) {
-                transformerException.printStackTrace();
-            }
         }
         return newDoc;
     }

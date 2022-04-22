@@ -29,23 +29,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class DomHelper {
-    private Document document;
-    private TransformerFactory factory;
-
-    public Document getDoc(File xmlFile) throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(xmlFile);
-        return document;
-    }
-
-    public void saveXMLFile(File xmlFile, Document document) throws TransformerException, IOException {
-        factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer();
-        DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(new FileWriter(xmlFile));
-        transformer.transform(source,result);
-    }
 
     public static DB loadXML(Document srcDoc) throws XPathExpressionException {
         DB db = null;
@@ -119,7 +102,7 @@ public class DomHelper {
         return db;
     }
 
-    public static String getNodeValue(String nodeName, Node target){
+    public static String getNodeValue(Node target){
        return target.getTextContent();
     }
 

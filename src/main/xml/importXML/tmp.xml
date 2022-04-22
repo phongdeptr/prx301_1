@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<students>
+    <student ID="SE0" majorId="SE">
+        <firstName>Norman</firstName>
+        <lastName>Larson</lastName>
+        <email>NormanLarson@gmail.com</email>
+        <dob>2000-12-22</dob>
+        <sex>false</sex>
+        <phone>(989) 441-2389</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE1" majorId="SE">
+        <firstName>Cassandra</firstName>
+        <lastName>Hood</lastName>
+        <email>CassandraHood@gmail.com</email>
+        <dob>1999-05-30</dob>
+        <sex>false</sex>
+        <phone>(955) 465-3514</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE2" majorId="SE">
+        <firstName>Noel</firstName>
+        <lastName>Lara</lastName>
+        <email>NoelLara@gmail.com</email>
+        <dob>1998-02-20</dob>
+        <sex>true</sex>
+        <phone>(953) 482-2008</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE3" majorId="SE">
+        <firstName>Stein</firstName>
+        <lastName>Gallagher</lastName>
+        <email>SteinGallagher@gmail.com</email>
+        <dob>2000-12-22</dob>
+        <sex>true</sex>
+        <phone>(930) 555-2090</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE4" majorId="SE">
+        <firstName>Penny</firstName>
+        <lastName>Wood</lastName>
+        <email>PennyWood@gmail.com</email>
+        <dob>1999-05-30</dob>
+        <sex>false</sex>
+        <phone>(947) 542-2855</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE5" majorId="SE">
+        <firstName>Trujillo</firstName>
+        <lastName>Duncan</lastName>
+        <email>TrujilloDuncan@gmail.com</email>
+        <dob>1999-05-30</dob>
+        <sex>true</sex>
+        <phone>(895) 437-2839</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE6" majorId="SE">
+        <firstName>Rios</firstName>
+        <lastName>Jones</lastName>
+        <email>RiosJones@gmail.com</email>
+        <dob>1998-02-20</dob>
+        <sex>true</sex>
+        <phone>(893) 517-2203</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE7" majorId="SE">
+        <firstName>Brown</firstName>
+        <lastName>Hall</lastName>
+        <email>BrownHall@gmail.com</email>
+        <dob>2000-12-22</dob>
+        <sex>true</sex>
+        <phone>(864) 403-3292</phone>
+        <status>study</status>
+    </student>
+    <student ID="SE8" majorId="SE">
+        <firstName>Heidi</firstName>
+        <lastName>Bullock</lastName>
+        <email>HeidiBullock@gmail.com</email>
+        <dob>1998-02-20</dob>
+        <sex>true</sex>
+        <phone>(830) 587-2186</phone>
+        <status>study</status>
+    </student>
+</students>
