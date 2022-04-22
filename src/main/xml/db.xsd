@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://phonght.com"
+           xmlns="https://phonght.com"
+           elementFormDefault="qualified">
+    <xs:element name="db" type="dbType"/>
+    <xs:complexType name="dbType">
+        <xs:sequence maxOccurs="1">
+            <xs:element name="majors" type="majorsType"/>
+            <xs:element name="students" type="studentsType">
+                <xs:unique name="UniqueID">
+                    <xs:selector xpath="student"/>
+                    <xs:field xpath="@ID" />
+                </xs:unique>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="majorsType">
+        <xs:sequence>
+            <xs:element name="major" type="majorType" minOccurs="0" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="studentsType">
+        <xs:sequence>
+            <xs:element name="student" type="studentType" minOccurs="0" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="studentType">
+        <xs:sequence>
+            <xs:element name="firstName">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Za-z ]{1,30}"></xs:pattern>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="lastName">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Za-z ]{1,30}"></xs:pattern>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="email">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[^@]+@[\d\w.\-_]+.[\w]+"></xs:pattern>
+                    </xs:restriction>
+                </xs:simpleType>
+                <xs:unique name="email">
+                    <xs:selector xpath="students"></xs:selector>
+                    <xs:field xpath="."></xs:field>
+                </xs:unique>
+            </xs:element>
+            <xs:element name="dob">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[0-9]{4,4}-(0[0-9]{1,1}|1[012])-(0[0-9]|[1-2][0-9]|3[0-1])"></xs:pattern>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sex">
+                <xs:simpleType>
+                    <xs:restriction base="xs:boolean">
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="phone">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[0-9]{5,11}|[(][0-9]{3,3}[)] [0-9]{3,3}-[0-9]{4,4}"></xs:pattern>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="status">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="study"/>
+                        <xs:enumeration value="graduated"/>
+                        <xs:enumeration value="dropdown"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="majorId">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[A-Z]{2,2}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="ID">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[A-Z]{2,2}[0-9]{1,6}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="majorType">
+        <xs:sequence>
+            <xs:element name="majorId">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Z]{2,2}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="majorName">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="200"></xs:maxLength>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
