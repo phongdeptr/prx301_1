@@ -1,1 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><db xmlns="https://phonght.com"><majors><major><majorId>SE</majorId><majorName>Software Engineer</majorName></major><major><majorId>BA</majorId><majorName>Business Administration</majorName></major></majors><students/></db>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<db xmlns="https://phonght.com">
+    <majors>
+        <major>
+            <majorId>SE</majorId>
+            <majorName>Software Engineer</majorName>
+        </major>
+        <major>
+            <majorId>BA</majorId>
+            <majorName>Business Administration</majorName>
+        </major>
+    </majors>
+    <students/>
+</db>

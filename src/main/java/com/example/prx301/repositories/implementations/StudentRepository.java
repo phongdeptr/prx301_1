@@ -20,10 +20,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -54,9 +51,14 @@ public class StudentRepository implements StudentXMLRepository<Student, StudentV
     public Student addNewStudent(Student student) {
         Optional<Student> newStu = Optional.of(student);
         newStu.ifPresent((stu) ->{
+            long count = 0;
+            db.getStudents().getStudents();
             if(db.getStudents() == null || db.getStudents().getStudents() == null){
                 db.setStudents(new Students(new ArrayList<>()));
+            }else{
+                count = db.getStudents().getStudents().stream().filter(student1 -> student1.getMajorId().equalsIgnoreCase(student.getMajorId())).count();
             }
+            stu.setId(stu.getMajorId()+count);
             db.getStudents().getStudents().add(stu);
             try {
                 marshaller.marshal(db,xmlDb);
@@ -104,21 +106,15 @@ public class StudentRepository implements StudentXMLRepository<Student, StudentV
     }
 
     @Override
-    public boolean removeStudent(String studentId) throws TransformerException {
-        NodeList students = document.getElementsByTagName("student");
-        boolean foundStudent = false;
-        for (int i = 0; i < students.getLength(); i++) {
-            Element currStudent = (Element) students.item(i);
-            NamedNodeMap attributes = currStudent.getAttributes();
-            Node id = attributes.getNamedItem("ID");
-            if(id.getTextContent().trim().equals(studentId)){
-                foundStudent = true;
-                currStudent.getParentNode().removeChild(currStudent);
-            }
-            document.removeChild(currStudent);
-        }
-        XMLHelpers.saveXMLContent(document,xmlDb);
-        return foundStudent;
+    public boolean removeStudent(String studentId){
+        Optional<Student> first = db.getStudents().getStudents().stream()
+                .filter(student -> student.getId().equals(studentId))
+                .findFirst();
+        first.ifPresent(
+                (stu) ->
+                db.getStudents().getStudents().remove(stu)
+        );
+        return first.isPresent();
     }
 
     @Override

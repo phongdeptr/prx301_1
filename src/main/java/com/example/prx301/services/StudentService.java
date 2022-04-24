@@ -32,6 +32,12 @@ public class StudentService {
         StudentValidationResult studentValidationResult = null;
         try {
             studentValidationResult = validator.checkStudent(dto);
+            if(repository.getAllStudent().stream().filter(student -> student.getEmail().equals(dto.getEmail())).findFirst().isPresent()){
+                if(studentValidationResult == null){
+                    studentValidationResult = new StudentValidationResult();
+                }
+                studentValidationResult.setEmailErr("Email is use by another student");
+            }
             if(studentValidationResult!=null){
                 throw new StudentException(studentValidationResult);
             }
