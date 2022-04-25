@@ -1,5 +1,8 @@
 package com.example.prx301.controllers;
 
+import com.example.prx301.entitties.DB;
+import com.example.prx301.entitties.Major;
+import com.example.prx301.entitties.Student;
 import com.example.prx301.exceptions.StudentException;
 import com.example.prx301.utils.XMLConverter;
 import com.example.prx301.utils.XMLHelpers;
@@ -19,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -27,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/file")
@@ -54,8 +60,8 @@ public class FileController {
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
             } else {
             }
-        } catch (MalformedURLException | TransformerException | XPathExpressionException ex) {
-
+        } catch (MalformedURLException | TransformerException | XPathExpressionException | JAXBException ex) {
+            ex.printStackTrace();
         }
         return null;
     }
@@ -139,6 +145,22 @@ public class FileController {
         } catch (TransformerException transformerException) {
             transformerException.printStackTrace();
         }
+        return "Import";
+    }
+
+    @PutMapping("/{auto}")
+    public String autoImport(@PathVariable("auto") String auto) throws JAXBException { ;
+        String pathOfUploadXMl = "src/main/xml/temp.xml";
+        File xml = new File(pathOfUploadXMl);
+        JAXBContext tempContext = JAXBContext.newInstance(DB.class);
+        DB temp = (DB) tempContext.createUnmarshaller().unmarshal(xml);
+        List<Student> students = temp.getStudents().getStudents();
+        List<Major> majors = temp.getMajors().getMajors();
+        File dbFile = new File("src/main/xml/xmlprx301.xml");
+        DB myDB = (DB) tempContext.createUnmarshaller().unmarshal(dbFile);
+        myDB.getStudents().getStudents().addAll(students);
+        myDB.getMajors().getMajors().addAll(majors);
+        tempContext.createMarshaller().marshal(myDB,dbFile);
         return "Import";
     }
 }

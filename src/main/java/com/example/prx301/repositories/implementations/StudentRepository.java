@@ -111,8 +111,14 @@ public class StudentRepository implements StudentXMLRepository<Student, StudentV
                 .filter(student -> student.getId().equals(studentId))
                 .findFirst();
         first.ifPresent(
-                (stu) ->
-                db.getStudents().getStudents().remove(stu)
+                (stu) ->{
+                    db.getStudents().getStudents().remove(stu);
+                    try {
+                        marshaller.marshal(db,xmlDb);
+                    } catch (JAXBException e) {
+                        e.printStackTrace();
+                    }
+                }
         );
         return first.isPresent();
     }

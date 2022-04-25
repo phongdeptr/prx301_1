@@ -12,6 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -39,7 +40,7 @@ public class Crawler {
             students = studentResponse.body();
             majors = majorsResponse.body();
             filePath = XmlGenerator.generateXMLDataFromApi(students,majors);
-        } catch (IOException | ParserConfigurationException | TransformerException | XPathExpressionException e) {
+        } catch (IOException | ParserConfigurationException | TransformerException | XPathExpressionException | JAXBException e) {
             e.printStackTrace();
         }
         return filePath;

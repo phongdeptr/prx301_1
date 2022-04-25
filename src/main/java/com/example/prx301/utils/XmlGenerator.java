@@ -4,10 +4,20 @@ import com.example.prx301.dto.DB;
 import com.example.prx301.dto.EStudentStatus;
 import com.example.prx301.dto.MajorDTO;
 import com.example.prx301.dto.StudentDTO;
+import com.example.prx301.entitties.Major;
+import com.example.prx301.entitties.Majors;
+import com.example.prx301.entitties.Student;
+import com.example.prx301.entitties.Students;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,10 +27,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -57,7 +65,7 @@ public class XmlGenerator {
                     dto.setLastName("Hoang Thanh");
                     dto.setDob("2000-06-02");
                     dto.setMajor(newSEMajor);
-                    dto.setEmail("phonght@gmail.com");
+                    dto.setEmail("phonght"+i+"@gmail.com");
                     dto.setPhoneNumber("02222222");
                 } else {
                     MajorDTO newGDMajor = new MajorDTO();
@@ -66,7 +74,7 @@ public class XmlGenerator {
                     dto.setFirstName("Tin");
                     dto.setLastName("Nguyen Thanh");
                     dto.setDob("2000-04-02");
-                    dto.setEmail("tinnt@gmail.com");
+                    dto.setEmail("tinnt"+i+"@gmail.com");
                     dto.setMajor(newGDMajor);
                     dto.setPhoneNumber("0010101");
                 }
@@ -91,18 +99,53 @@ public class XmlGenerator {
                 majorDTOList.add(dto);
             }
         }
-        return new DB(studentDTOList,majorDTOList);
+        return new DB(studentDTOList, majorDTOList);
     }
 
-    public static String generateXMLDataFromApi(List<StudentDTO> studentDTOList, List<MajorDTO> majorDTOList) throws ParserConfigurationException, TransformerException, XPathExpressionException {
+    public static String generateXMLDataFromApi(List<StudentDTO> studentDTOList, List<MajorDTO> majorDTOList) throws ParserConfigurationException, TransformerException, XPathExpressionException, JAXBException {
+        com.example.prx301.entitties.DB db = new com.example.prx301.entitties.DB();
         String pathForGeneratedXML = "src/main/xml/" + "temp.xml";
         File xmlFile = new File(pathForGeneratedXML);
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.newDocument();
-        XmlGenerator.initDoc(document, studentDTOList, majorDTOList);
-        XMLHelpers.saveXMLContent(document, xmlFile);
+        if(!xmlFile.exists()){
+            try {
+                xmlFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        List<Student> students = studentDTOList.stream()
+                .map(Student::fromDtoToEntity)
+                .map(stu -> {
+                    Student student = stu.get();
+                    student.setId(student.getMajorId()+student.getId());
+                    return student;
+                }).collect(Collectors.toList());
+        List<Major> majors = majorDTOList.stream().map(Major::fromDtoToEntity).map(Optional::get).collect(Collectors.toList());
+        Marshaller marshaller = JAXBContext.newInstance(com.example.prx301.entitties.DB.class).createMarshaller();
+        db.setStudents(new Students(students));
+        db.setMajors(new Majors(majors));
+        marshaller.marshal(db, xmlFile);
         return pathForGeneratedXML;
+    }
+
+
+    public static void initDoc2(com.example.prx301.entitties.DB db, List<StudentDTO> dtos, List<MajorDTO> majorDTOList) throws JAXBException {
+        String pathForGeneratedXML = "src/main/xml/" + "xmlprx301.xml";
+        File xmlFile = new File(pathForGeneratedXML);
+        Marshaller marshaller = null;
+        if (!xmlFile.exists()) {
+            try {
+                xmlFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        List<Student> students = dtos.stream().map(Student::fromDtoToEntity).map(Optional::get).collect(Collectors.toList());
+        List<Major> majors = majorDTOList.stream().map(Major::fromDtoToEntity).map(Optional::get).collect(Collectors.toList());
+        marshaller = JAXBContext.newInstance(com.example.prx301.entitties.DB.class).createMarshaller();
+        db.setStudents(new Students(students));
+        db.setMajors(new Majors(majors));
+        marshaller.marshal(db, xmlFile);
     }
 
     public static void initDoc(Document document, List<StudentDTO> studentDTOList, List<MajorDTO> majorDTOList) throws XPathExpressionException {
@@ -111,18 +154,18 @@ public class XmlGenerator {
         Node dbNode = (Node) xPath.evaluate("//db", document, XPathConstants.NODE);
         Node studentNode = (Node) xPath.evaluate("//students", document, XPathConstants.NODE);
         Node majorNode = (Node) xPath.evaluate("//majors", document, XPathConstants.NODE);
-        if(dbNode == null){
+        if (dbNode == null) {
             db = document.createElement("db");
             db.setAttribute("xmlns", "https://phonght.com");
             db.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             db.setAttribute("xsi:schemaLocation", "https://phonght.com db.xsd");
             document.appendChild(db);
-        }else{
+        } else {
             db = (Element) dbNode;
-            if(studentNode != null){
+            if (studentNode != null) {
                 db.removeChild(studentNode);
             }
-            if(majorNode != null){
+            if (majorNode != null) {
                 db.removeChild(majorNode);
             }
         }
@@ -142,7 +185,7 @@ public class XmlGenerator {
             majors.appendChild(major);
             majorTotalStudent.put(majorDTO.getId(), 1);
         });
-        studentDTOList =  studentDTOList.stream().sorted(Comparator.comparing(stu -> stu.getMajor().getId())).collect(Collectors.toList());
+        studentDTOList = studentDTOList.stream().sorted(Comparator.comparing(stu -> stu.getMajor().getId())).collect(Collectors.toList());
         studentDTOList.stream().forEach((studentDTO) -> {
             Element student = document.createElement("student");
             Attr majorId = document.createAttribute("majorId");
@@ -179,10 +222,10 @@ public class XmlGenerator {
         db.appendChild(students);
     }
 
-    public String generateDBXMLData() throws TransformerException, XPathExpressionException {
+    public String generateDBXMLData() throws TransformerException, XPathExpressionException, JAXBException {
         DB db = initXMLData();
-        initDoc(document, db.getStudents(), db.getMajors());
-        XMLHelpers.saveXMLContent(document, xmlDb);
+        initDoc2(new com.example.prx301.entitties.DB(), db.getStudents(), db.getMajors());
+        //XMLHelpers.saveXMLContent(document, xmlDb);
         return xmlDb.getAbsolutePath();
     }
 }

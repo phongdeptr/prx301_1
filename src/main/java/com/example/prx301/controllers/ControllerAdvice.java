@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.xml.bind.JAXBException;
+
 @RestControllerAdvice
 public class ControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(StudentException.class)
@@ -23,5 +25,10 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MajorException.class)
     public ResponseEntity<?> majorExceptionHandler(MajorException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(JAXBException.class)
+    public ResponseEntity<?> majorExceptionHandler(JAXBException ex) {
+        return new ResponseEntity<>("Server Service is maintained", HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
